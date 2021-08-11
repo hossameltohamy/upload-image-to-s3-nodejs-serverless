@@ -13,7 +13,6 @@ const path = require('path');
 const express = require('express');
 const dotenv = require('dotenv');
 
-
 /**
  * import morgan npm for development purpose
  * @type {NPM}
@@ -91,6 +90,9 @@ const fileUpload = require('express-fileupload');
 app.use(
   fileUpload({
     createParentPath: true,
+    limits: {
+      fileSize: 2 * 1024 * 1024 * 1024, //2MB max file(s) size
+    },
   })
 );
 // Sanitize data
