@@ -1,0 +1,18 @@
+org: hossamyahia1017
+app: upload-image-to-aws-s3-app
+service: upload-image-to-aws-s3 #Name of your App
+
+provider:
+ name: aws
+ runtime: nodejs10.x # Node JS version
+ memorySize: 512
+ timeout: 15
+ stage: production
+ region: us-east-1 # AWS region
+
+functions:
+ api:
+   handler: lambda.handler
+   events:
+     - http: ANY /{proxy+}
+     - http: ANY /

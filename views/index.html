@@ -1,0 +1,83 @@
+<html>
+
+<body>
+
+
+  <h2>Upload Your Image to s3 directly</h2>
+
+  <input type="file" id="file-input">
+  <p id="status">Please select a file</p>
+  <img style="border:1px solid gray;width:300px;" id="preview" src="/images/default.png">
+
+
+  <!-- <form method="POST" action="/save-details">
+              <input type="hidden" id="avatar-url" name="avatar-url" value="/images/default.png">
+        
+              <hr>
+              <h2>Save Changes</h2>
+        
+              <input type="submit" value="Update profile">
+            </form> -->
+
+
+  <script>
+
+    /*
+    Function to carry out the actual PUT request to S3 using the signed request from the app.
+  */
+    function uploadFile(file, signedRequest, url) {
+      console.log(signedRequest)
+      fetch(`${signedRequest}`, {
+        method: 'PUT',
+        body: file
+      }).then(function (response) {
+        document.getElementById('preview').src = url;
+        return response;
+      }).then((data) => { // This is the JSON from our response
+        console.log(data)
+      }).catch((err) => { // There was an error
+        console.warn('Something went wrong.', err);
+      });
+    }
+    /*
+    Function to get the temporary signed request from the app.
+    If request successful, continue to upload the file using this signed
+    request.
+  */
+    function getSignedRequest(file) {
+
+      fetch(`/api/v1/upload/sign-s3?file-name=${file.name}&file-type=${file.type}`).then(function (response) {
+          return response.json();
+        }).then(function (data) { // This is the JSON from our response
+          const result = uploadFile(file, data.signedRequest, data.url);
+
+
+        }).catch(function (err) { // There was an error
+          console.warn('Something went wrong.', err);
+        });
+
+    }
+
+    /*
+   Function called when file input updated. If there is a file selected, then
+   start upload procedure by asking for a signed request from the app.
+  */
+    function initUpload() {
+      const files = document.getElementById('file-input').files;
+      const file = files[0];
+      if (file == null) {
+        return alert('No file selected.');
+      }
+      getSignedRequest(file);
+    }
+
+    /*
+   Bind listeners when the page loads.
+  */
+    (() => {
+      document.getElementById('file-input').onchange = initUpload;
+    })();
+  </script>
+</body>
+
+</html>
