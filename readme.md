@@ -2,6 +2,11 @@
 
 * Create an API to enable system users to securely upload images provided that they are 
 authenticated.
+• api for login & register
+• api for direct upload from nodejs backend
+• api for generate signed-url and upload from front end
+• front end to upload directly to aws by generate signed url 
+Note: open browser localhost:3000 you can upload directly to aws with signed url 
 
 
 
