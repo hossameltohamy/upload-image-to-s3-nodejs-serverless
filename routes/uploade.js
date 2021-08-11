@@ -4,7 +4,7 @@ const router = express.Router();
 const { protect } = require('../middleware/auth');
 const aws = require('aws-sdk');
 const S3_BUCKET = process.env.S3_BUCKET;
-aws.config.region = process.env.region;
+aws.config.region = process.env.region
 
 // route unprotected for upload from browser
 router.get('/sign-s3', (req, res) => {

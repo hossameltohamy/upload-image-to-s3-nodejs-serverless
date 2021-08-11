@@ -9,7 +9,7 @@ const AWS = require('aws-sdk');
 const uuid = require('uuid/v1');
 const Upload = require('../models/Upload');
 const fs = require('fs');
-AWS.config.region = 'eu-central-1';
+AWS.config.region = process.env.region;
 const path = require('path');
 const S3_BUCKET = process.env.S3_BUCKET;
 const s3 = new AWS.S3({
@@ -53,7 +53,7 @@ exports.DirectUpload = asyncHandler(async (req, res, next) => {
   const filename = `${file.name}`;
   const key = `${req.user.id}/${uuid()}${filename}`;
   // move file
-  await movefile(file);
+  await file.mv(path.join(__dirname, '../uploads', file.name));
   //Read content from the file
   const fileContent = await fs.readFileSync('./uploads/' + filename);
   const params = {
@@ -82,18 +82,3 @@ exports.DirectUpload = asyncHandler(async (req, res, next) => {
     }
   });
 });
-
-const movefile = async (file) => {
-  console.log('files', file);
-  try {
-    if (file === null) {
-      throw new Error('Not file Specified');
-    }
-    await file.mv(path.join(__dirname, '../uploads', file.name));
-
-    return true;
-  } catch (err) {
-    console.log('err' + err);
-    return error;
-  }
-};
