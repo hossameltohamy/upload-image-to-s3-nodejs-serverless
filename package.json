@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "prod": "NODE_ENV=production node server",
-    "dev": "nodemon server.js",
+    "dev": "nodemon locale.js",
     "deploy": " export AWS_CLIENT_TIMEOUT=30000; npx serverless deploy",
     "dashboard": "npx serverless dashboard",
     "test": "jest --watchAll"

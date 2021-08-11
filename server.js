@@ -1,7 +1,7 @@
 /**
  * @file server is the root  app
  * @author Hossam Yahia
- * @see <a href="">project repo </a>
+ * @see <a href="https://github.com/hossameltohamy/upload-image-to-s3-nodejs-serverless">project repo </a>
  */
 
 const path = require('path');
@@ -134,14 +134,14 @@ app.use('/api/v1/upload', upload);
 // handle erros
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 3000;
+// const PORT = process.env.PORT || 3000;
 
-const server = app.listen(
-  PORT,
-  console.log(
-    `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold
-  )
-);
+// const server = app.listen(
+//   PORT,
+//   console.log(
+//     `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold
+//   )
+// );
 
 //Handle unhandled promise rejections
 process.on('unhandledRejection', (err, promise) => {
@@ -149,3 +149,4 @@ process.on('unhandledRejection', (err, promise) => {
   // Close server & exit process
   //server.close(() => process.exit(1));
 });
+module.exports = app;

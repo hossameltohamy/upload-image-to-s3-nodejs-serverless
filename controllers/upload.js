@@ -52,10 +52,8 @@ exports.DirectUpload = asyncHandler(async (req, res, next) => {
   }
   const filename = `${file.name}`;
   const key = `${req.user.id}/${uuid()}${filename}`;
-  await file.mv(path.join(__dirname, '../uploads', filename), (err) => {
-    console.log(err);
-  });
-
+  // move file
+  await movefile(file);
   //Read content from the file
   const fileContent = await fs.readFileSync('./uploads/' + filename);
   const params = {
@@ -83,6 +81,19 @@ exports.DirectUpload = asyncHandler(async (req, res, next) => {
       return next(new ErrorResponse(err, 400));
     }
   });
-
-  
 });
+
+const movefile = async (file) => {
+  console.log('files', file);
+  try {
+    if (file === null) {
+      throw new Error('Not file Specified');
+    }
+    await file.mv(path.join(__dirname, '../uploads', file.name));
+
+    return true;
+  } catch (err) {
+    console.log('err' + err);
+    return error;
+  }
+};
